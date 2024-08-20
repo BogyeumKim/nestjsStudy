@@ -31,7 +31,7 @@ export class BoardsService implements OnModuleInit {
     this.service = this.client.getService<GrpcService>('Simple');
   }
 
-  getGrpcRes(name : string): Observable<string> {
+  getGrpcRes(name: string): Observable<string> {
     return this.service.sayHello({ name });
   }
 
@@ -45,16 +45,8 @@ export class BoardsService implements OnModuleInit {
     return found;
   }
 
-  async createBoards(createBoard: CreateBoardDto): Promise<Board> {
-    const { title, description } = createBoard;
-    const board = this.boardRepositroy.create({
-      title,
-      description,
-      status: BoardStatus.PUBLIC,
-    });
-
-    await this.boardRepositroy.save(board);
-    return board;
+  createBoards(createBoard: CreateBoardDto): Promise<Board> {
+    return this.boardRepositroy.createBoard(createBoard);
   }
 
   // private boards: Board[] = [];
