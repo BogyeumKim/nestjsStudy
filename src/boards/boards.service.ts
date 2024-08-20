@@ -49,6 +49,16 @@ export class BoardsService implements OnModuleInit {
     return this.boardRepositroy.createBoard(createBoard);
   }
 
+  async deleteBoard(id:number) : Promise<void> {
+    const reulst = await this.boardRepositroy.delete(id);
+
+    if(reulst.affected === 0) {
+      throw new NotFoundException('cnat find ID!')
+    }
+    console.log('result',reulst);
+    
+  }
+
   // private boards: Board[] = [];
 
   // getAllBoards(): Board[] {
