@@ -3,9 +3,11 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -19,6 +21,11 @@ import { Board } from './board.entity';
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
+  @Get()
+  getGrpc() {
+    return this.boardsService.getGrpcRes('이것은몇글자입니까?');
+  }
+
   // @Get()
   // getAllBoard(): Board[] {
   //   return this.boardsService.getAllBoards();
@@ -27,6 +34,12 @@ export class BoardsController {
   @Get('/:id')
   getBoardById(@Param('id') id: number): Promise<Board> {
     return this.boardsService.getBoardById(id);
+  }
+
+  @Post()
+  @UsePipes(ValidationPipe)
+  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardsService.createBoards(createBoardDto);
   }
 
   // @Get('/:id')

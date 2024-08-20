@@ -1,15 +1,39 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { v1 as uuid } from 'uuid';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
+import { BoardStatus } from './boards-status.enum';
+import { Observable } from 'rxjs';
+import { ClientGrpc } from '@nestjs/microservices';
+
+interface GrpcService {
+  sayHello(data: { name: string }): Observable<any>;
+}
+
 @Injectable()
-export class BoardsService {
+export class BoardsService implements OnModuleInit {
+  private service: GrpcService;
+
   constructor(
     @InjectRepository(BoardRepository)
     private readonly boardRepositroy: BoardRepository,
+    @Inject('GRPC_TEST_PACKAGE')
+    private client: ClientGrpc,
   ) {}
+
+  onModuleInit() {
+    this.service = this.client.getService<GrpcService>('Simple');
+  }
+
+  getGrpcRes(name : string): Observable<string> {
+    return this.service.sayHello({ name });
+  }
 
   async getBoardById(id: number): Promise<Board> {
     const found = await this.boardRepositroy.findOne({ where: { id } });
@@ -19,6 +43,18 @@ export class BoardsService {
     }
 
     return found;
+  }
+
+  async createBoards(createBoard: CreateBoardDto): Promise<Board> {
+    const { title, description } = createBoard;
+    const board = this.boardRepositroy.create({
+      title,
+      description,
+      status: BoardStatus.PUBLIC,
+    });
+
+    await this.boardRepositroy.save(board);
+    return board;
   }
 
   // private boards: Board[] = [];

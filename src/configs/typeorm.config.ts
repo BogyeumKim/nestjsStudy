@@ -1,11 +1,11 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 export const typeORMConfig : TypeOrmModuleOptions = {
-    type:'mysql',
-    host: 'localhost',
+      type:'mysql',
+      host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '!Bogyeum25~',
+      password: 'bogyeum25',
       database: 'board-app',
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
       synchronize: true,
