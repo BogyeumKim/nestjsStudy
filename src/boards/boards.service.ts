@@ -35,6 +35,10 @@ export class BoardsService implements OnModuleInit {
     return this.service.sayHello({ name });
   }
 
+  async getAllBoards():Promise<Board[]> {
+    return this.boardRepositroy.find();
+  }
+
   async getBoardById(id: number): Promise<Board> {
     const found = await this.boardRepositroy.findOne({ where: { id } });
 

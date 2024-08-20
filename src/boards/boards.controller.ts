@@ -22,7 +22,7 @@ import { Board } from './board.entity';
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
-  @Get()
+  @Get('/grpc')
   getGrpc() {
     return this.boardsService.getGrpcRes('이것은몇글자입니까?');
   }
@@ -31,6 +31,11 @@ export class BoardsController {
   // getAllBoard(): Board[] {
   //   return this.boardsService.getAllBoards();
   // }
+
+  @Get()
+  getAllBoard(): Promise<Board[]> {
+    return this.boardsService.getAllBoards();
+  }
 
   @Get('/:id')
   getBoardById(@Param('id') id: number): Promise<Board> {
