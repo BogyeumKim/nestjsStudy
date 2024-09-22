@@ -22,10 +22,6 @@ import { Board } from './board.entity';
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
-  @Get('/grpc')
-  getGrpc() {
-    return this.boardsService.getGrpcRes('이것은몇글자입니까?');
-  }
 
   // @Get()
   // getAllBoard(): Board[] {

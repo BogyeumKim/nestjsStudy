@@ -1,39 +1,22 @@
 import {
-  Inject,
   Injectable,
   NotFoundException,
-  OnModuleInit,
 } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
 import { BoardStatus } from './boards-status.enum';
-import { Observable } from 'rxjs';
-import { ClientGrpc } from '@nestjs/microservices';
 
-interface GrpcService {
-  sayHello(data: { name: string }): Observable<any>;
-}
 
 @Injectable()
-export class BoardsService implements OnModuleInit {
-  private service: GrpcService;
+export class BoardsService {
 
   constructor(
     @InjectRepository(BoardRepository)
     private readonly boardRepositroy: BoardRepository,
-    @Inject('GRPC_TEST_PACKAGE')
-    private client: ClientGrpc,
   ) {}
 
-  onModuleInit() {
-    this.service = this.client.getService<GrpcService>('Simple');
-  }
-
-  getGrpcRes(name: string): Observable<string> {
-    return this.service.sayHello({ name });
-  }
 
   async getAllBoards():Promise<Board[]> {
     return this.boardRepositroy.find();

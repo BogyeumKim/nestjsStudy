@@ -1,0 +1,29 @@
+version: '3'
+services:
+  nestjs-app:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=bogyeum25
+      - DATABASE_NAME=board-app
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mysql:5.7  # MySQL Docker 이미지 사용
+    environment:
+      MYSQL_ROOT_PASSWORD: bogyeum25
+      MYSQL_DATABASE: board-app
+    ports:
+      - '3306:3306'  # MySQL 기본 포트
+    networks:
+      - app-network
+
+networks:
+  app-network:
