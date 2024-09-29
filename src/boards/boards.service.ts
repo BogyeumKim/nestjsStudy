@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BoardRepository } from './board.repository';
 import { Board } from './board.entity';
 import { BoardStatus } from './boards-status.enum';
+import { User } from 'src/auth/user.entity';
 
 
 @Injectable()
@@ -32,8 +33,8 @@ export class BoardsService {
     return found;
   }
 
-  createBoards(createBoard: CreateBoardDto): Promise<Board> {
-    return this.boardRepositroy.createBoard(createBoard);
+  createBoards(createBoard: CreateBoardDto,user:User): Promise<Board> {
+    return this.boardRepositroy.createBoard(createBoard,user);
   }
 
   async deleteBoard(id: number): Promise<void> {

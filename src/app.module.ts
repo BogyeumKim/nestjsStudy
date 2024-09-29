@@ -6,9 +6,13 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [BoardsModule,TypeOrmModule.forRoot(typeORMConfig),
-    ConfigModule.forRoot({isGlobal:true,envFilePath:`.${process.env.NODE_ENV}.env`}),
-    AuthModule
+  imports: [
+    BoardsModule,
+    TypeOrmModule.forRoot(typeORMConfig),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.${process.env.NODE_ENV}.env`,
+    }),
   ],
 })
 export class AppModule {}
